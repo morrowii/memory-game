@@ -15,12 +15,11 @@ import sorcerer from './images/sorcerer.png';
 import warlock from './images/warlock.png';
 import wizard from './images/wizard.png';
 
-const imgArr = [barbarian, bard, cleric, druid, fighter, monk, paladin, ranger, rogue, sorcerer, warlock, wizard];
-
 class App extends Component {
   state = {
     currentScore: 0,
-    highScore: 0
+    highScore: 0,
+    imgArr: [barbarian, bard, cleric, druid, fighter, monk, paladin, ranger, rogue, sorcerer, warlock, wizard]
   }
 
   updateScores = async () => {
@@ -32,9 +31,26 @@ class App extends Component {
         highScore: this.state.currentScore
       });
     }
-    if (this.state.currentScore === imgArr.length) {
+    if (this.state.currentScore === this.state.imgArr.length) {
       // render win message
     }
+  }
+
+  resetScores = () => {
+    this.setState({
+      currentScore: 0
+    });
+  }
+
+  shuffleImages = () => {
+    let tempArr = this.state.imgArr;
+    for (let i = tempArr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [tempArr[i], tempArr[j]] = [tempArr[j], tempArr[i]];
+    }
+    this.setState({
+      imgArr: tempArr
+    });
   }
 
   render() {
@@ -51,7 +67,7 @@ class App extends Component {
             <h2 className="mx-5">High Score: {this.state.highScore}</h2>
           </nav>
         </div>
-        <PlayArea imgArr={imgArr} updateScores={this.updateScores} />
+        <PlayArea imgArr={this.state.imgArr} updateScores={this.updateScores} resetScores={this.resetScores} shuffleImages={this.shuffleImages} />
         <footer className="row p-5 bg-dark"></footer>
       </div>
     );

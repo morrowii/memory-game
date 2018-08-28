@@ -6,23 +6,17 @@ let chosenImages = [];
 
 class PlayArea extends React.Component {
 
-    handleClickEvent = async event => {
-        await this.updateChoices(event);
-        this.props.updateScores();
-    }
-    
-    updateChoices = event => {
+    handleClickEvent = event => {
         let currentChoice = event.target.name;
         if (chosenImages.indexOf(currentChoice) === -1) {
             chosenImages.push(currentChoice);
+            this.props.updateScores();
         }
         else {
-            this.gameOverRestart();
+            chosenImages = [];
+            this.props.resetScores();
         }
-    }
-
-    gameOverRestart = () => {
-        // reset current score and shuffle images (make sure images are shuffled initially)
+        this.props.shuffleImages();
     }
 
     render() {
