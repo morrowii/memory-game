@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import PlayArea from './components/PlayArea.js';
+import Message from './components/Message.js';
 
 import barbarian from './images/barbarian.png';
 import bard from './images/bard.png';
@@ -19,12 +20,14 @@ class App extends Component {
   state = {
     currentScore: 0,
     highScore: 0,
-    imgArr: [barbarian, bard, cleric, druid, fighter, monk, paladin, ranger, rogue, sorcerer, warlock, wizard]
+    imgArr: [barbarian, bard, cleric, druid, fighter, monk, paladin, ranger, rogue, sorcerer, warlock, wizard],
+    correct: null
   }
 
   updateScores = async () => {
     await this.setState({
-      currentScore: this.state.currentScore + 1
+      currentScore: this.state.currentScore + 1,
+      correct: true
     });
     if (this.state.currentScore > this.state.highScore) {
       this.setState({
@@ -38,7 +41,8 @@ class App extends Component {
 
   resetScores = () => {
     this.setState({
-      currentScore: 0
+      currentScore: 0,
+      correct: false
     });
   }
 
@@ -57,18 +61,22 @@ class App extends Component {
     return (
       <div className="App container-fluid">
         <div className="row">
-          <header className="col d-flex py-5 bg-dark text-light">
-            <h1 className="mx-auto">Memory Game - D&D Style</h1>
+          <header className="col d-flex flex-column py-4 text-light">
+            <h1 className="m-auto">Memory Game - D&D Style</h1>
+            <h2 className="m-auto">Choose unique characters to earn points.</h2>
           </header>
         </div>
         <div className="row">
-          <nav className="col d-flex flex-row py-5 bg-danger justify-content-center text-light">
-            <h2 className="mx-5">Current Score: {this.state.currentScore}</h2>
-            <h2 className="mx-5">High Score: {this.state.highScore}</h2>
+          <nav className="col d-flex flex-column py-4 text-light game-info">
+            <div className="d-flex flex-row flex-wrap mx-auto">
+              <h3 className="mx-3">Current Score: {this.state.currentScore}</h3>
+              <h3 className="mx-3">High Score: {this.state.highScore}</h3>
+            </div>
+            <Message correct={this.state.correct} />
           </nav>
         </div>
         <PlayArea imgArr={this.state.imgArr} updateScores={this.updateScores} resetScores={this.resetScores} shuffleImages={this.shuffleImages} />
-        <footer className="row p-5 bg-dark"></footer>
+        <footer className="row p-5"></footer>
       </div>
     );
   }
